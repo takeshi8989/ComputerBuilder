@@ -1,0 +1,12 @@
+p{
+    font-size: 20px;
+}
+
+select{
+    size: 50px;
+}
+
+
+.select-size{
+    width: 20%;
+}

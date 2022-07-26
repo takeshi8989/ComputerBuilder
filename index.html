@@ -1,0 +1,107 @@
+<!--bootstrap-->
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="stylesheet.css">
+    <title>computer-builder</title>
+  </head>
+    <body>
+      <div class="mb-2">
+          <div class="bg-dark d-flex justify-content-center text-white">
+              <h2 class="m-2">Build Your Own Computer</h2>
+          </div>
+          <div class="bg-white mt-3">
+              <p>Step 1: Select Your CPU</p>
+              <div class="d-flex align-items-center">
+                  <p>Brand</p>
+                  <select class="mb-2 ml-3 select-size" id="cpu-brand">
+                      <option>-</option>
+                      <option>Intel</option>
+                      <option>AMD</option>
+                  </select>
+                  <p class="ml-3">Model</p>
+                  <select class="mb-2 ml-3 select-size" id="cpu-model">
+                      <option>-</option>
+                  </select>
+              </div>
+
+              <p>Step 2: Select Your GPU</p>
+              <div class="d-flex align-items-center">
+                  <p>Brand</p>
+                  <select class="mb-2 ml-3 select-size" id="gpu-brand">
+                      <option>-</option>
+                      <option>Nvidia</option>
+                      <option>AMD</option>
+                      <option>Zotac</option>
+                      <option>Asus</option>
+                      <option>MSI</option>
+                      <option>Gigabyte</option>
+                      <option>EVGA</option>
+                      <option>Sapphire</option>
+                      <option>PowerColor</option>
+                      <option>XFX</option>
+                      <option>ASRock</option>
+                      <option>Gainward</option>
+                      <option>PNY</option>
+                      <option>PwrHis</option>
+                  </select>
+                  <p class="ml-3">Model</p>
+                  <select class="mb-2 ml-3 select-size" id="gpu-model">
+                      <option>-</option>
+                  </select>
+              </div>
+
+              <p>Step 3: Select Your Memory Card</p>
+              <div class="d-flex align-items-center">
+                  <p style="font-size:18px">How many?</p>
+                  <select class="mb-2 ml-3" id="ram-amount">
+                      <option>-</option>
+                      <option>1</option>
+                      <option>2</option>
+                      <option>3</option>
+                      <option>4</option>
+                  </select>
+                  <p class="ml-3">Brand</p>
+                  <select class="mb-2 ml-3 select-size" id="ram-brand">
+                      <option>-</option>
+                  </select>
+                  <p class="ml-3">Model</p>
+                  <select class="mb-2 ml-3 select-size" id="ram-model">
+                      <option>-</option>
+                  </select>
+              </div>
+
+              <p>Step 4: Select Your Storage</p>
+              <div class="d-flex align-items-center">
+                  <p>HDD or SSD</p>
+                  <select class="mb-2 ml-3" id="storage-type">
+                      <option>-</option>
+                      <option>HDD</option>
+                      <option>SSD</option>
+                  </select>
+                  <p class="ml-3">Storage</p>
+                  <select class="mb-2 ml-3 select-size" id="storage-size">
+                      <option>-</option>
+                  </select>
+                  <p class="ml-3">Brand</p>
+                  <select class="mb-2 ml-3 select-size" id="storage-brand">
+                      <option>-</option>
+                  </select>
+                  <p class="ml-3">Model</p>
+                  <select class="mb-2 ml-3 select-size" id="storage-model">
+                      <option>-</option>
+                  </select>
+              </div>
+
+              <button class="btn btn-primary select-size ml-4" id="add-btn">Add PC</button>
+          </div>
+          <div id="target">
+
+          </div>
+      </div>
+
+      <script src="script.js"></script>
+    </body>
+</html>
