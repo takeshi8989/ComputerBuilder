@@ -1,4 +1,3 @@
-
 const config = {
     url:"https://api.recursionist.io/builder/computers?type=",
     parentId:"target"
@@ -40,10 +39,10 @@ function setCpuEvent(data){
 
     cpuBrandInput.addEventListener("change", function(){
         cpuModelInput.innerHTML = `<option>-</option>`;
-        let arr = cpuMap[cpuBrandInput.value];
-        for(model of arr){
+        let map = cpuMap[cpuBrandInput.value];
+        for(info of map){
             cpuModelInput.innerHTML += `
-                <option>${model}</option>
+                <option value="${info.Benchmark},${info.Model}">${info.Model}</option>
             `;
         }
     })
@@ -53,8 +52,8 @@ function createCPUMap(data){
     let intel = [];
     let amd = [];
     for(cpu of data){
-        if(cpu.Brand == "Intel") intel.push(cpu.Model);
-        else if(cpu.Brand == "AMD") amd.push(cpu.Model);
+        if(cpu.Brand == "Intel") intel.push({"Model" : cpu.Model, "Benchmark" : cpu.Benchmark});
+        else if(cpu.Brand == "AMD") amd.push({"Model" : cpu.Model, "Benchmark" : cpu.Benchmark});
     }
     let cpuMap = {
         "Intel": intel,
@@ -68,10 +67,10 @@ function setGpuEvent(data){
 
     gpuBrandInput.addEventListener("change", function(){
         gpuModelInput.innerHTML = `<option>-</option>`;
-        let arr = gpuMap[gpuBrandInput.value];
-        for(model of arr){
+        let map = gpuMap[gpuBrandInput.value];
+        for(info of map){
             gpuModelInput.innerHTML+=`
-                <option>${model}</option>
+                <option value="${info.Benchmark},${info.Model}">${info.Model}</option>
             `;
         }
     })
@@ -85,9 +84,8 @@ function createGPUMap(data){
         gpuMap[gpuBrands[i].value] = [];
     }
     for(gpu of data){
-        gpuMap[gpu.Brand].push(gpu.Model);
+        gpuMap[gpu.Brand].push({"Model" : cpu.Model, "Benchmark" : cpu.Benchmark});
     }
-
     return gpuMap;
 }
 
@@ -113,11 +111,11 @@ function setRamEvent(data){
         let brand = ramBrandInput.value;
         if(brand == "-") return;
 
-        for(model of ramMap[brand]){
-            let arr = model.split(" ");
+        for(info of ramMap[brand]){
+            let arr = info.Model.split(" ");
             let stick = arr[arr.length - 1].charAt(0);
             if(stick == amount){
-                ramModelInput.innerHTML += `<option>${model}</option>`;
+                ramModelInput.innerHTML += `<option value="${info.Benchmark},${info.Model}">${info.Model}</option>`;
             }
         }
     })
@@ -131,7 +129,7 @@ function createRamMap(data){
         "HyperX" : []
     }
     for(ram of data){
-        ramMap[ram.Brand].push(ram.Model);
+        ramMap[ram.Brand].push({"Model" : ram.Model, "Benchmark" : ram.Benchmark});
     }
     return ramMap;
 }
@@ -189,7 +187,7 @@ function setHddEvent(data){
 
             for(hdd of data){
                 if(hdd.Brand == storageBrand && hdd.Model.indexOf(" " + size) != -1){
-                    storageModelInput.innerHTML += `<option>${hdd.Model}</option>`;
+                    storageModelInput.innerHTML += `<option value="${hdd.Benchmark},${hdd.Model}">${hdd.Model}</option>`;
                 }
             }
         }
@@ -217,7 +215,7 @@ function setSsdEvent(data){
 
             for(ssd of data){
                 if(ssd.Brand == storageBrand && ssd.Model.indexOf(" " + size) != -1){
-                    storageModelInput.innerHTML += `<option>${ssd.Model}</option>`;
+                    storageModelInput.innerHTML += `<option value="${ssd.Benchmark},${ssd.Model}">${ssd.Model}</option>`;
                 }
             }
         }
@@ -226,16 +224,20 @@ function setSsdEvent(data){
 
 addComputerBtn.addEventListener("click", function(){
     let cpuBrand = cpuBrandInput.value;
-    let cpuModel = cpuModelInput.value;
+    let cpuModel = cpuModelInput.value.substring(cpuModelInput.value.indexOf(",") + 1);
+    let cpuBenchmark = cpuModelInput.value.substring(0, cpuModelInput.value.indexOf(","));
     let gpuBrand = gpuBrandInput.value;
-    let gpuModel = gpuModelInput.value;
+    let gpuModel = gpuModelInput.value.substring(cpuModelInput.value.indexOf(",") + 1);
+    let gpuBenchmark = gpuModelInput.value.substring(0, gpuModelInput.value.indexOf(","));
     let ramAmount = amountInput.value;
     let ramBrand = ramBrandInput.value;
-    let ramModel = ramModelInput.value;
+    let ramModel = ramModelInput.value.substring(ramModelInput.value.indexOf(",") + 1);
+    let ramBenchmark = ramModelInput.value.substring(0, ramModelInput.value.indexOf(","));
     let storageType = storageTypeInput.value;
     let storageSize = storageSizeInput.value;
     let storageBrand = storageBrandInput.value;
-    let storageModel = storageModelInput.value;
+    let storageModel = storageModelInput.value.substring(ramModelInput.value.indexOf(",") + 1);
+    let storageBenchmark = storageModelInput.value.substring(0, storageModelInput.value.indexOf(","));
 
     if(cpuBrand == "-" || cpuModel == "-" || gpuBrand == "-" || gpuModel == "-" ||ramAmount == "-" || ramBrand == "-" || ramModel == "-" || storageType == "-" || storageSize == "-" || storageBrand == "-" || storageModel == "-"){
         alert("Please fill in all forms.");
@@ -245,71 +247,35 @@ addComputerBtn.addEventListener("click", function(){
     let computer = {
         "CPU" : {
             "Brand" : cpuBrand,
-            "Model" : cpuModel
+            "Model" : cpuModel,
+            "Benchmark" : cpuBenchmark
         },
         "GPU" : {
             "Brand" : gpuBrand,
-            "Model" : gpuModel
+            "Model" : gpuModel,
+            "Benchmark" : gpuBenchmark
         },
         "RAM" : {
             "Amount" : ramAmount,
             "Brand" : ramBrand,
-            "Model" : ramModel
+            "Model" : ramModel,
+            "Benchmark" : ramBenchmark
         },
         "Storage" : {
             "Type" : storageType,
             "Size" : storageSize,
             "Brand" : storageBrand,
-            "Model" : storageModel
+            "Model" : storageModel,
+            "Benchmark" : storageBenchmark
         }
     }
     let parent = document.getElementById(config.parentId);
+    console.log(computer);
     buildComputer(computer);
 })
 
-//continue
-function buildComputer(computer){
-    let parent = document.getElementById(config.parentId);
-
-    fetch(config.url + "cpu").then(response => response.json()).then(function(data){
-        computer.CPU["Benchmark"] = catchBenchmark(data, computer, "CPU");
-    })
-    fetch(config.url + "gpu").then(response => response.json()).then(function(data){
-        computer.GPU["Benchmark"] = catchBenchmark(data, computer, "GPU");
-    })
-    fetch(config.url + "ram").then(response => response.json()).then(function(data){
-        computer.RAM["Benchmark"] = catchBenchmark(data, computer, "RAM");
-    })
-
-    let hddOrSSD = computer.Storage.Type.toLowerCase();
-    fetch(config.url + hddOrSSD).then(response => response.json()).then(function(data){
-        computer.Storage["Benchmark"] = catchBenchmark(data, computer, "Storage");
-    })
-
-    const myTimeout = setTimeout(function(){
-
-        parent.append(yourNewPC(computer));
-    }, 100);
-}
-
-function catchBenchmark(data, computer, type){
-    for(part of data){
-        if(part.Model == computer[type].Model){
-            return part["Benchmark"];
-        }
-    }
-}
-
-function catchStorageBenchmark(data, computer, type){
-    for(part of data){
-        if(part.Model == computer[type].Model){
-            return part["Benchmark"];
-        }
-    }
-}
-
 let count = 0;
-function yourNewPC(computer){
+function buildComputer(computer){
     console.log(computer);
     count++;
     let gaming = Math.floor(computer.CPU.Benchmark * 0.25 + computer.GPU.Benchmark * 0.6 + computer.RAM.Benchmark * 0.125 + computer.Storage.Benchmark * 0.025);
@@ -346,5 +312,6 @@ function yourNewPC(computer){
             </div>
         </div>
     `
-    return computerDiv;
+    let parent = document.getElementById(config.parentId);
+    parent.append(computerDiv);
 }
