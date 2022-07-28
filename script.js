@@ -269,8 +269,6 @@ addComputerBtn.addEventListener("click", function(){
             "Benchmark" : storageBenchmark
         }
     }
-    let parent = document.getElementById(config.parentId);
-    console.log(computer);
     buildComputer(computer);
 })
 
